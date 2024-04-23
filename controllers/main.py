@@ -8,10 +8,11 @@ class RestClient(http.Controller):
 
     @http.route('/api/v1/db14/products', type='json', auth='none', methods=['POST'], csrf=False)
     def post_product_data(self, **post):
-        old_post = str(post)
+
         body = request.httprequest.get_data()
         json_body = json.loads(body.decode('utf-8'))
-        log.warning('in controller ')
+        data = json_body['data']
+
   
 
         # Get the token from the request header
@@ -29,24 +30,23 @@ class RestClient(http.Controller):
             return json.dumps({'error': 'Invalid authorization token'})
 
         # Retrieve data from the request body
-        log.warning(json_body)
-
-
+        log.warning(data)
         
+   
         # Update product quantity
         product = request.env['product.product'].sudo().search([],limit=1)
-        product.with_context(from_controller=True).update_product_from_controller(json_body)
+        product.with_context(from_controller=True).update_product_from_controller(data)
        
         # Return success response
         return json.dumps({'success': True})
 
     @http.route('/api/v1/db14/product_categories', type='json', auth='none', methods=['POST'], csrf=False)
     def post_product_category_data(self, **post):
-        old_post = str(post)
+
         body = request.httprequest.get_data()
         json_body = json.loads(body.decode('utf-8'))
-        log.warning('in controller ')
-  
+        data = json_body['data']
+
 
         # Get the token from the request header
         auth_token = request.httprequest.headers.get('Authorization')
@@ -63,13 +63,16 @@ class RestClient(http.Controller):
             return json.dumps({'error': 'Invalid authorization token'})
 
         # Retrieve data from the request body
-        log.warning(json_body)
+        log.warning(data)
 
 
         
         # Update product quantity
         category = request.env['product.category'].sudo().search([],limit=1)
-        category.with_context(from_controller=True).update_category_from_controller(json_body)
+        log.warning('category')
+        log.warning(category)
+
+        category.with_context(from_controller=True).update_category_from_controller(data)
        
         # Return success response
         return json.dumps({'success': True})

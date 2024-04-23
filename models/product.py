@@ -1,5 +1,5 @@
 from odoo import fields, models, api
-
+import logging as log
 
 class ProductProduct(models.Model):
 
@@ -144,6 +144,7 @@ class ProductCategory(models.Model):
 
 
     def update_category_from_controller(self, data):
+        log.warning('in update_category_from_controller')
         category = self.env['product.category']
         for dictt in data :
             if dictt['parent_id']:

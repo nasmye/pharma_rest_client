@@ -8,7 +8,7 @@
  
 
     'website': '',
-    'depends': ['base','stock' ],
+    'depends': ['base','stock','product_brand','product_customization' ],
     'data': [
 
         # 'security/ir.model.access.csv',
