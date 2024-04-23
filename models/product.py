@@ -28,12 +28,12 @@ class ProductProduct(models.Model):
             #intrastat_code_id
             if dictt['intrastat_code_id']:
                 intrastat = self.env['account.intrastat.code'].search([('code','=',dictt['intrastat_code_id'])])
-                dictt['intrastat_code_id'] = intrastat.id else False
+                dictt['intrastat_code_id'] = intrastat.id if intrastat else False
 
             #intrastat_origin_country_id
             if dictt['intrastat_origin_country_id']:
                 country = self.env['res.country'].search([('code','=',dictt['intrastat_origin_country_id'])])
-                dictt['intrastat_origin_country_id'] = intrastat_origin_country_id.id else False
+                dictt['intrastat_origin_country_id'] = intrastat_origin_country_id.id if intrastat_origin_country_id else False
             
 
             #product_family_id
@@ -130,7 +130,7 @@ class ProductProduct(models.Model):
             my_prod = product.search([('id_exchange','=',dictt['id_exchange'])])  
             if my_prod :
                 my_prod.write(dictt)
-            else
+            else:
                 product.create(dictt)
 
         return True 
@@ -152,7 +152,7 @@ class ProductCategory(models.Model):
             my_categ = category.search([('id_exchange','=',dictt['id_exchange'])])  
             if my_categ :
                 my_categ.write(dictt)
-            else
+            else:
                 category.create(dictt)
 
         return True 

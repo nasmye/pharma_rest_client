@@ -35,7 +35,7 @@ class RestClient(http.Controller):
         
         # Update product quantity
         product = request.env['product.product'].sudo().search([],limit=1)
-        product.with_context(from_controller=True).update_from_controller(json_body)
+        product.with_context(from_controller=True).update_product_from_controller(json_body)
        
         # Return success response
         return json.dumps({'success': True})
@@ -68,8 +68,8 @@ class RestClient(http.Controller):
 
         
         # Update product quantity
-        product = request.env['product.category'].sudo().search([],limit=1)
-        product.with_context(from_controller=True).update_from_controller(json_body)
+        category = request.env['product.category'].sudo().search([],limit=1)
+        category.with_context(from_controller=True).update_category_from_controller(json_body)
        
         # Return success response
         return json.dumps({'success': True})

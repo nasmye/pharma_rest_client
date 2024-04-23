@@ -12,10 +12,11 @@
 
                 <xpath expr="//notebook" position="inside">
                     <page string="Security">
+                        <group string="Security">
 
+                            <field name="token" />
 
-                       <field name="token"  />
-
+                        </group>
 
                    </page>
                 </xpath>
