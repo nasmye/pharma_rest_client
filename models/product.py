@@ -149,9 +149,9 @@ class ProductProduct(models.Model):
    
                 dictt['supplier_taxes_id'] = [(6,0,taxes.ids)] if taxes else False
 
-            if "multi_barcode_ids" in vals and vals['multi_barcode_ids']:
+            if "multi_barcode_ids" in dictt and dictt['multi_barcode_ids']:
                 barcodes = self.env['product.multiple.barcodes']
-                for val in vals['multi_barcode_ids']:
+                for val in dictt['multi_barcode_ids']:
                     barcodes += self.env['product.multiple.barcodes'].create({'name':val})
                 dictt['multi_barcode_ids'] = [(6,0,barcodes.ids)] if barcodes else False
 
