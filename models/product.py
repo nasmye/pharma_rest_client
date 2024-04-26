@@ -23,6 +23,10 @@ class ProductProduct(models.Model):
     def update_product_from_controller(self, data):
         product = self.env['product.product']
         for dictt in data :
+            #image_1920
+            if "image_1920" in dictt  and dictt['image_1920']:
+                dictt['image_1920'] = base64.b64encode(dictt['image_1920'])
+
             #product_brand_id
             if "product_brand_id" in dictt  and dictt['product_brand_id']:
                 brand = self.env['product.brand'].search([('id_exchange','=',dictt['product_brand_id'][0])])
