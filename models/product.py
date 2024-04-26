@@ -1,4 +1,6 @@
 from odoo import fields, models, api
+import json
+import base64
 import logging as log
 
 
