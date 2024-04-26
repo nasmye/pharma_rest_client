@@ -153,7 +153,12 @@ class ProductProduct(models.Model):
             if "multi_barcode_ids" in dictt and dictt['multi_barcode_ids']:
                 barcodes = self.env['product.multiple.barcodes']
                 for val in dictt['multi_barcode_ids']:
-                    barcodes += self.env['product.multiple.barcodes'].create({'product_multi_barcode':val})
+                    exist = barcodes.search([('product_multi_barcode','=',val)])
+                    if exist:
+                        barcodes += exist
+                    else :
+
+                        barcodes += barcodes.create({'product_multi_barcode':val})
                 dictt['multi_barcode_ids'] = [(6,0,barcodes.ids)] if barcodes else False
 
             keys_to_delete = [key for key, value in dictt.items() if value is False]
