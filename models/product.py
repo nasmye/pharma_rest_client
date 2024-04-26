@@ -64,25 +64,6 @@ class ProductProduct(models.Model):
                     subfamily = self.env['product.sub.family'].create({'id_exchange': dictt['product_sub_family_id'][0],'name': dictt['product_sub_family_id'][1]})
                 dictt['product_sub_family_id'] = subfamily.id
 
-            #categ_id
-            if "categ_id" in dictt  and dictt['categ_id']:
-                categ = self.env['product.category'].search([('id_exchange','=',dictt['categ_id'])])
-                dictt['categ_id'] = categ.id
-
-            #multi_categ_id
-            if "multi_categ_id" in dictt  and dictt['multi_categ_id']:
-                categ = self.env['product.category'].search([('id_exchange','=',dictt['multi_categ_id'])])
-                dictt['multi_categ_id'] = categ.id
-
-            #category2_id
-            if "category2_id" in dictt  and dictt['category2_id']:
-                categ = self.env['product.category'].search([('id_exchange','=',dictt['category2_id'])])
-                dictt['category2_id'] = categ.id
-
-            #category3_id
-            if "category3_id" in dictt  and dictt['category3_id']:
-                categ = self.env['product.category'].search([('id_exchange','=',dictt['category3_id'])])
-                dictt['category3_id'] = categ.id
 
             #container_ids
             if "container_ids" in dictt  and dictt['container_ids']:
@@ -100,6 +81,26 @@ class ProductProduct(models.Model):
                 
                 
                 dictt['shape_ids'] = shape.id
+
+            #categ_id
+            if "categ_id" in dictt  and dictt['categ_id']:
+                categ = self.env['product.category'].search([('id_exchange','=',dictt['categ_id'])])
+                dictt['categ_id'] = categ.id
+
+            #category2_id
+            if "category2_id" in dictt  and dictt['category2_id']:
+                categ = self.env['product.category'].search([('id_exchange','=',dictt['category2_id'])])
+                dictt['category2_id'] = categ.id
+
+            #category3_id
+            if "category3_id" in dictt  and dictt['category3_id']:
+                categ = self.env['product.category'].search([('id_exchange','=',dictt['category3_id'])])
+                dictt['category3_id'] = categ.id
+
+            #multi_categ_id
+            if "multi_categ_id" in dictt  and dictt['multi_categ_id']:
+                categ = self.env['product.category'].search([('id_exchange','in',dictt['multi_categ_id'])])
+                dictt['multi_categ_id'] = [(6,0,categ.ids)]
 
 
             #capacity_ids
