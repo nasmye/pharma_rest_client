@@ -56,6 +56,23 @@ class ProductProduct(models.Model):
                 categ = self.env['product.category'].search([('id_exchange','=',dictt['categ_id'])])
                 dictt['categ_id'] = categ.id
 
+            #container_ids
+            if dictt['container_ids']:
+                container = self.env['container'].search([('name','=',dictt['container_ids'])])
+                if not container:
+                    container = self.env['container'].create({'name': dictt['container_ids']})
+                
+                dictt['container_ids'] = container.id
+
+            #shape_ids
+            if dictt['shape_ids']:
+                shape = self.env['shape'].search([('name','=',dictt['shape_ids'])])
+                if not shape:
+                    shape = self.env['shape'].create({'name': dictt['shape_ids']})
+                
+                
+                dictt['shape_ids'] = shape.id
+
 
             #capacity_ids
             if dictt['capacity_ids']:
@@ -64,10 +81,9 @@ class ProductProduct(models.Model):
                 missing_capacity_names = [capacity_name for capacity_name in dictt['capacity_ids'] if capacity_name not in set(capacity.mapped('name'))]
                 for missing_capacity in missing_capacity_names:
                     capacity += self.env['capacity'].create({'name': missing_capacity})
-                if not capacity :
-                    dictt['capacity_ids'] = False
+       
                    
-                dictt['capacity_ids'] = [(6,0,capacity.ids)]
+                dictt['capacity_ids'] = [(6,0,capacity.ids)] if capacity else False
 
 
             #color_ids
@@ -77,23 +93,10 @@ class ProductProduct(models.Model):
                 missing_color_names = [color_name for color_name in dictt['color_ids'] if color_name not in set(color.mapped('name'))]
                 for missing_color in missing_color_names:
                     color += self.env['color'].create({'name': missing_color})
-                if not color :
-                    dictt['color_ids'] = False
-                   
-                dictt['color_ids'] = [(6,0,color.ids)]
+               
+                dictt['color_ids'] = [(6,0,color.ids)] if color else False
 
-            #container_ids
-            if dictt['container_ids']:
-                container = self.env['container'].search([('name','in',dictt['container_ids'])])
-
-                missing_container_names = [container_name for container_name in dictt['container_ids'] if container_name not in set(container.mapped('name'))]
-                for missing_container in missing_container_names:
-                    container += self.env['container'].create({'name': missing_container})
-                if not container :
-                    dictt['container_ids'] = False
-                   
-                dictt['container_ids'] = [(6,0,container.ids)]
-
+            
             #for_who_ids
             if dictt['for_who_ids']:
                 for_who = self.env['for_who'].search([('name','in',dictt['for_who_ids'])])
@@ -101,33 +104,24 @@ class ProductProduct(models.Model):
                 missing_for_who_names = [for_who_name for for_who_name in dictt['for_who_ids'] if for_who_name not in set(for_who.mapped('name'))]
                 for missing_for_who in missing_for_who_names:
                     for_who += self.env['for_who'].create({'name': missing_for_who})
-                if not for_who :
-                    dictt['for_who_ids'] = False
-                   
-                dictt['for_who_ids'] = [(6,0,for_who.ids)]
+              
+                dictt['for_who_ids'] = [(6,0,for_who.ids)] if for_who else False
 
-            #shape_ids
-            if dictt['shape_ids']:
-                shape = self.env['shape'].search([('name','in',dictt['shape_ids'])])
-
-                missing_shape_names = [shape_name for shape_name in dictt['shape_ids'] if shape_name not in set(shape.mapped('name'))]
-                for missing_shape in missing_shape_names:
-                    shape += self.env['shape'].create({'name': missing_shape})
-                if not shape :
-                    dictt['shape_ids'] = False
-                   
-                dictt['shape_ids'] = [(6,0,shape.ids)]
-
+            
 
             #taxes_id
             if dictt['taxes_id']:
                 taxes = self.env['account.tax'].search([('name','in',dictt['taxes_id'])])
-                if not taxes :
-                    dictt['taxes_id'] = False
+   
                    
-                dictt['taxes_id'] = [(6,0,taxes.ids)]
+                dictt['taxes_id'] = [(6,0,taxes.ids)] if taxes else False
 
+            keys_to_delete = [key for key, value in dictt.items() if value is False]
+            for key in keys_to_delete:
+                del dictt[key]
             my_prod = product.search([('id_exchange','=',dictt['id_exchange'])])  
+            log.warning('dictt===================')
+            log.warning(dictt)
             if my_prod :
                 my_prod.write(dictt)
             else:
