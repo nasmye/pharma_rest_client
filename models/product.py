@@ -46,9 +46,9 @@ class ProductProduct(models.Model):
 
             #product_sub_family_id
             if dictt['product_sub_family_id']:
-                subfamily = self.env['product.family'].search([('id_exchange','=',dictt['product_sub_family_id'][0])])
+                subfamily = self.env['product.sub.family'].search([('id_exchange','=',dictt['product_sub_family_id'][0])])
                 if not subfamily :
-                    subfamily = self.env['product.family'].create({'id_exchange': dictt['product_sub_family_id'][0],'name': dictt['product_sub_family_id'][1]})
+                    subfamily = self.env['product.sub.family'].create({'id_exchange': dictt['product_sub_family_id'][0],'name': dictt['product_sub_family_id'][1]})
                 dictt['product_sub_family_id'] = subfamily.id
 
             #categ_id
@@ -167,5 +167,11 @@ class ProductBrand(models.Model):
 class ProductFamily(models.Model):
 
     _inherit = 'product.family'
+
+    id_exchange = fields.Integer()
+
+class ProductFamily(models.Model):
+
+    _inherit = 'product.sub.family'
 
     id_exchange = fields.Integer()
