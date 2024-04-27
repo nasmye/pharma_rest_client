@@ -33,14 +33,16 @@ class ProductProduct(models.Model):
             if "product_brand_id" in dictt  and dictt['product_brand_id']:
                 brand = self.env['product.brand'].search([('id_exchange','=',dictt['product_brand_id'][0])])
                 if not brand :
-                    brand = self.env['product.brand'].create({'id_exchange': dictt['product_brand_id'][0],'name': dictt['product_brand_id'][1],'logo': dictt['product_brand_id'][2]})
+                    brand = self.env['product.brand'].create({'id_exchange': dictt['product_brand_id'][0],'name': dictt['product_brand_id'][1],
+                                                            'logo':base64.decodebytes(dictt['product_brand_id'][2].encode('ascii'))})
                 dictt['product_brand_id'] = brand.id
 
             #x_product_brand_id2
             if "x_product_brand_id2" in dictt  and dictt['x_product_brand_id2']:
                 brand2 = self.env['product.brand'].search([('id_exchange','=',dictt['x_product_brand_id2'][0])])
                 if not brand2 :
-                    brand2 = self.env['product.brand'].create({'id_exchange': dictt['x_product_brand_id2'][0],'name': dictt['x_product_brand_id2'][1],'logo': dictt['x_product_brand_id2'][2]})
+                    brand2 = self.env['product.brand'].create({'id_exchange': dictt['x_product_brand_id2'][0],'name': dictt['x_product_brand_id2'][1],
+                                                            'logo': base64.decodebytes(dictt['x_product_brand_id2'][2].encode('ascii'))})
                 dictt['x_product_brand_id2'] = brand2.id
 
 
@@ -211,6 +213,21 @@ class ProductBrand(models.Model):
 
     id_exchange = fields.Integer()
 
+    def update_brand_from_controller(self):
+        log.warning('in update_brand_from_controller')
+        brand = self.env['product.brand']
+        for dictt in data :
+            if 'logo' in dictt and dictt['logo']:
+                dictt['logo'] = base64.decodebytes(dictt['logo'].encode('ascii'))
+                
+            my_brand = brand.search([('id_exchange','=',dictt['id_exchange'])])  
+            if my_brand :
+                my_brand.write(dictt)
+            else:
+                brand.create(dictt)
+
+        return True 
+
 
 
 
@@ -221,8 +238,39 @@ class ProductFamily(models.Model):
 
     id_exchange = fields.Integer()
 
+    def update_family_from_controller(self):
+        log.warning('in update_family_from_controller')
+        family = self.env['product.family']
+        for dictt in data :
+            if 'logo' in dictt and dictt['logo']:
+                dictt['logo'] = base64.decodebytes(dictt['logo'].encode('ascii'))
+                
+            my_family = family.search([('id_exchange','=',dictt['id_exchange'])])  
+            if my_family :
+                my_family.write(dictt)
+            else:
+                family.create(dictt)
+
+        return True 
+
+
 class ProductFamily(models.Model):
 
     _inherit = 'product.sub.family'
+
+    def update_subfamily_from_controller(self):
+        log.warning('in update_subfamily_from_controller')
+        subfamily = self.env['product.sub.family']
+        for dictt in data :
+            if 'logo' in dictt and dictt['logo']:
+                dictt['logo'] = base64.decodebytes(dictt['logo'].encode('ascii'))
+                
+            my_subfamily = subfamily.search([('id_exchange','=',dictt['id_exchange'])])  
+            if my_subfamily :
+                my_subfamily.write(dictt)
+            else:
+                subfamily.create(dictt)
+
+        return True 
 
     id_exchange = fields.Integer()
