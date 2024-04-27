@@ -93,7 +93,7 @@ class ProductProduct(models.Model):
 
             #label_ids
             if "label_ids" in dictt  and dictt['label_ids']:
-                label = self.env['label'].search([('name','=',dictt['label_ids'])])
+                label = self.env['label'].search([('name','in',dictt['label_ids'])])
                 if not label:
                     label = self.env['label'].create({'name': dictt['label_ids']})
                 
