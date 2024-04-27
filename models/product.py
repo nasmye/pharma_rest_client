@@ -213,7 +213,7 @@ class ProductBrand(models.Model):
 
     id_exchange = fields.Integer()
 
-    def update_brand_from_controller(self):
+    def update_brand_from_controller(self, data):
         log.warning('in update_brand_from_controller')
         brand = self.env['product.brand']
         for dictt in data :
@@ -238,7 +238,7 @@ class ProductFamily(models.Model):
 
     id_exchange = fields.Integer()
 
-    def update_family_from_controller(self):
+    def update_family_from_controller(self, data):
         log.warning('in update_family_from_controller')
         family = self.env['product.family']
         for dictt in data :
@@ -258,7 +258,7 @@ class ProductFamily(models.Model):
 
     _inherit = 'product.sub.family'
 
-    def update_subfamily_from_controller(self):
+    def update_subfamily_from_controller(self, data):
         log.warning('in update_subfamily_from_controller')
         subfamily = self.env['product.sub.family']
         for dictt in data :
