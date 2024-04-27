@@ -94,11 +94,13 @@ class ProductProduct(models.Model):
             #label_ids
             if "label_ids" in dictt  and dictt['label_ids']:
                 label = self.env['label'].search([('name','in',dictt['label_ids'])])
-                if not label:
-                    label = self.env['label'].create({'name': dictt['label_ids']})
-                
-                
-                dictt['label_ids'] = label.id
+
+                missing_label_names = [label_name for label_name in dictt['label_ids'] if label_name not in set(label.mapped('name'))]
+                for missing_label in missing_label_names:
+                    label += self.env['label'].create({'name': missing_label})
+       
+                   
+                dictt['label_ids'] = [(6,0,label.ids)] if label else False
 
             #categ_id
             if "categ_id" in dictt  and dictt['categ_id']:
