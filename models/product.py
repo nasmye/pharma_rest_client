@@ -81,6 +81,7 @@ class ProductProduct(models.Model):
                 
                 dictt['container_ids'] = container.id
 
+
             #shape_ids
             if "shape_ids" in dictt  and dictt['shape_ids']:
                 shape = self.env['shape'].search([('name','=',dictt['shape_ids'])])
@@ -89,6 +90,15 @@ class ProductProduct(models.Model):
                 
                 
                 dictt['shape_ids'] = shape.id
+
+            #label_ids
+            if "label_ids" in dictt  and dictt['label_ids']:
+                label = self.env['label'].search([('name','=',dictt['label_ids'])])
+                if not label:
+                    label = self.env['label'].create({'name': dictt['label_ids']})
+                
+                
+                dictt['label_ids'] = label.id
 
             #categ_id
             if "categ_id" in dictt  and dictt['categ_id']:
